@@ -16,7 +16,11 @@ const makerPage = (req, res) => {
 // create domo
 const makeDomo = (req, res) => {
   if (!req.body.title || !req.body.body || !req.body.colour) {
-    return res.status(400).json({ error: 'RAWR! Both title and contents are required' });
+    return res.status(400).json({ error: 'Please fill out all fields' });
+  }
+    
+  if (req.body.duedate) {
+    return res.status(400).json({ error: req.body.duedate });
   }
 
     // set internal data
@@ -25,6 +29,7 @@ const makeDomo = (req, res) => {
     body: req.body.body,
     owner: req.session.account._id,
     colour: req.body.colour,
+    duedate: req.body.duedate,
   };
 
   // console.dir(domoData.colour);

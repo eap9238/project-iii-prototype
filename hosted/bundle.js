@@ -1,6 +1,4 @@
-"use strict";
-
-var handleDomo = function handleDomo(e) {
+const handleDomo = e => {
   e.preventDefault();
 
   $("#domoMessage").animate({ width: 'hide' }, 350);
@@ -19,19 +17,19 @@ var handleDomo = function handleDomo(e) {
   return false;
 };
 
-var showModal = function showModal(e) {
+const showModal = e => {
   //e.preventDefault();
   console.log("Yo");
   //document.getElementById("domoForm").style.display = "block";
 };
 
-var hideModal = function hideModal(e) {
+const hideModal = e => {
   e.preventDefault();
 
   document.getElementById("domoForm").style.display = "none";
 };
 
-var handleDelete = function handleDelete(e) {
+const handleDelete = e => {
   e.preventDefault();
 
   $("#domoMessage").animate({ width: 'hide' }, 350);
@@ -41,10 +39,12 @@ var handleDelete = function handleDelete(e) {
   });
 };
 
-var DomoForm = function DomoForm(props) {
+const DomoForm = props => {
   document.getElementById("modal").onclick = function () {
     document.getElementById("domoForm").style.display = "block";
   };
+
+  var tDate = Date.now();
 
   return React.createElement(
     "form",
@@ -68,6 +68,14 @@ var DomoForm = function DomoForm(props) {
       ),
       React.createElement("br", null),
       React.createElement("input", { id: "domoBody", type: "textarea", name: "body", cols: "27", wrap: "hard", placeholder: "Note Contents" }),
+      React.createElement("br", null),
+      React.createElement("br", null),
+      React.createElement(
+        "label",
+        { "for": "dueDate" },
+        "Due date (Optional):"
+      ),
+      React.createElement("input", { type: "date", id: "dueDate", name: "dueDate" }),
       React.createElement("br", null),
       React.createElement("br", null),
       React.createElement(
@@ -114,7 +122,7 @@ var DomoForm = function DomoForm(props) {
   );
 };
 
-var DomoList = function DomoList(props) {
+const DomoList = function (props) {
   if (props.domos.length === 0) {
     return React.createElement(
       "div",
@@ -129,43 +137,86 @@ var DomoList = function DomoList(props) {
     );
   }
 
-  var domoNodes = props.domos.map(function (domo) {
+  const domoNodes = props.domos.map(function (domo) {
     console.dir(domo);
     console.dir(domo.date);
+    console.dir(domo.duedate);
 
-    return React.createElement(
-      "div",
-      { key: domo._id, className: domo.colour },
-      React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
-      React.createElement(
-        "h3",
-        { className: "domoTitle" },
-        domo.title
-      ),
-      React.createElement(
+    if (domo.date != domo.duedate) {
+      return React.createElement(
         "div",
-        { className: "domoBody" },
-        domo.body
-      ),
-      React.createElement(
-        "h4",
-        { className: "domoDate" },
-        "Date: ",
-        domo.date
-      ),
-      React.createElement(
-        "form",
-        { id: domo._id,
-          onSubmit: handleDelete,
-          name: "deleteDomo",
-          action: "/deleteDomo",
-          method: "DELETE"
-        },
-        React.createElement("input", { type: "hidden", name: "_id", value: domo._id }),
-        React.createElement("input", { type: "hidden", id: "token", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "makeDomoDelete", type: "submit", value: "X" })
-      )
-    );
+        { key: domo._id, className: domo.colour },
+        React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
+        React.createElement(
+          "h3",
+          { className: "domoTitle" },
+          domo.title
+        ),
+        React.createElement(
+          "div",
+          { className: "domoBody" },
+          domo.body
+        ),
+        React.createElement(
+          "h4",
+          { className: "domoDate" },
+          "Created: ",
+          domo.date
+        ),
+        React.createElement(
+          "h4",
+          { className: "domoDate" },
+          "Scheduled: ",
+          domo.duedate
+        ),
+        React.createElement(
+          "form",
+          { id: domo._id,
+            onSubmit: handleDelete,
+            name: "deleteDomo",
+            action: "/deleteDomo",
+            method: "DELETE"
+          },
+          React.createElement("input", { type: "hidden", name: "_id", value: domo._id }),
+          React.createElement("input", { type: "hidden", id: "token", name: "_csrf", value: props.csrf }),
+          React.createElement("input", { className: "makeDomoDelete", type: "submit", value: "X" })
+        )
+      );
+    } else {
+      return React.createElement(
+        "div",
+        { key: domo._id, className: domo.colour },
+        React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
+        React.createElement(
+          "h3",
+          { className: "domoTitle" },
+          domo.title
+        ),
+        React.createElement(
+          "div",
+          { className: "domoBody" },
+          domo.body
+        ),
+        React.createElement(
+          "h4",
+          { className: "domoDate" },
+          "Created: ",
+          domo.date
+        ),
+        React.createElement(
+          "form",
+          { id: domo._id,
+            onSubmit: handleDelete,
+            name: "deleteDomo",
+            action: "/deleteDomo",
+            method: "DELETE"
+          },
+          React.createElement("input", { type: "hidden", name: "_id", value: domo._id }),
+          React.createElement("input", { type: "hidden", id: "token", name: "_csrf", value: props.csrf }),
+          React.createElement("input", { className: "makeDomoDelete", type: "submit", value: "X" })
+        )
+      );
+    }
   });
 
   return React.createElement(
@@ -175,13 +226,13 @@ var DomoList = function DomoList(props) {
   );
 };
 
-var loadDomosFromServer = function loadDomosFromServer(csrf) {
-  sendAjax('GET', '/getDomos', null, function (data) {
+const loadDomosFromServer = csrf => {
+  sendAjax('GET', '/getDomos', null, data => {
     ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
   });
 };
 
-var setup = function setup(csrf) {
+const setup = function (csrf) {
   /*
     ReactDOM.render(
     <ModalForm csrf={csrf} />, document.querySelector("#modalManager")
@@ -195,8 +246,8 @@ var setup = function setup(csrf) {
   loadDomosFromServer(csrf);
 };
 
-var getToken = function getToken() {
-  sendAjax('GET', '/getToken', null, function (result) {
+const getToken = () => {
+  sendAjax('GET', '/getToken', null, result => {
     setup(result.csrfToken);
   });
 };
@@ -204,10 +255,8 @@ var getToken = function getToken() {
 $(document).ready(function () {
   getToken();
 });
-'use strict';
-
 // handleError()
-var handleError = function handleError(msg) {
+const handleError = msg => {
   /*
   $('#errorMessage').text(msg);
   $('#domoMessage').animate({ width: 'toggle' }, 350);
@@ -217,13 +266,13 @@ var handleError = function handleError(msg) {
 };
 
 // redirect()
-var redirect = function redirect(response) {
+const redirect = response => {
   $('#domoMessage').animate({ width: 'hide' }, 350);
   window.location = response.redirect;
 };
 
 // sendAjax()
-var sendAjax = function sendAjax(type, action, data, success) {
+const sendAjax = (type, action, data, success) => {
   $.ajax({
     cache: false,
     type: type,
@@ -231,7 +280,7 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: 'json',
     success: success,
-    error: function error(xhr, status, _error) {
+    error: function (xhr, status, error) {
       console.log(xhr.responseText);
       var msgObj = JSON.parse(xhr.responseText);
       handleError(msgObj.error);

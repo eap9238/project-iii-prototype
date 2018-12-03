@@ -44,6 +44,8 @@ const DomoForm = (props) => {
       document.getElementById("domoForm").style.display = "block";
   };
     
+  var tDate = Date.now();
+    
   return (
     <form id="domoForm" onSubmit={handleDomo} name="domoForm" action="/maker" method="POST" className="domoForm">
         <div className="DomoFormObject"> 
@@ -58,6 +60,13 @@ const DomoForm = (props) => {
             <br/>
             <input id="domoBody" type="textarea" name="body" cols="27" wrap="hard" placeholder="Note Contents"/>
       
+            <br/>
+            <br/>
+            
+            <label for="dueDate">Due date (Optional):</label>
+
+            <input type="date" id="dueDate" name="dueDate"/>
+
             <br/>
             <br/>
       
@@ -98,25 +107,49 @@ const DomoList = function(props) {
   const domoNodes = props.domos.map(function(domo) {
     console.dir(domo);
     console.dir(domo.date);
+    console.dir(domo.duedate);
       
-    return (
-      <div key={domo._id} className={domo.colour}>
-        <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
-        <h3 className="domoTitle">{domo.title}</h3>
-        <div className="domoBody">{domo.body}</div>
-        <h4 className="domoDate">Date: {domo.date}</h4>
-        <form id={domo._id}
-              onSubmit={handleDelete}
-              name="deleteDomo"
-              action="/deleteDomo"
-              method="DELETE"
-        >
-            <input type="hidden" name="_id" value={domo._id}/>
-            <input type="hidden" id="token" name="_csrf" value={props.csrf}/>
-            <input className="makeDomoDelete" type="submit" value="X"/>
-        </form>
-      </div>
-    );
+    if (domo.date != domo.duedate) {
+        return (
+          <div key={domo._id} className={domo.colour}>
+            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
+            <h3 className="domoTitle">{domo.title}</h3>
+            <div className="domoBody">{domo.body}</div>
+            <h4 className="domoDate">Created: {domo.date}</h4>
+            <h4 className="domoDate">Scheduled: {domo.duedate}</h4>
+            <form id={domo._id}
+                  onSubmit={handleDelete}
+                  name="deleteDomo"
+                  action="/deleteDomo"
+                  method="DELETE"
+            >
+                <input type="hidden" name="_id" value={domo._id}/>
+                <input type="hidden" id="token" name="_csrf" value={props.csrf}/>
+                <input className="makeDomoDelete" type="submit" value="X"/>
+            </form>
+          </div>
+        );
+    }
+    else {
+        return (
+          <div key={domo._id} className={domo.colour}>
+            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
+            <h3 className="domoTitle">{domo.title}</h3>
+            <div className="domoBody">{domo.body}</div>
+            <h4 className="domoDate">Created: {domo.date}</h4>
+            <form id={domo._id}
+                  onSubmit={handleDelete}
+                  name="deleteDomo"
+                  action="/deleteDomo"
+                  method="DELETE"
+            >
+                <input type="hidden" name="_id" value={domo._id}/>
+                <input type="hidden" id="token" name="_csrf" value={props.csrf}/>
+                <input className="makeDomoDelete" type="submit" value="X"/>
+            </form>
+          </div>
+        );
+      }
   });
 
   return (

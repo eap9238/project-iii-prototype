@@ -1,9 +1,5 @@
-'use strict';
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 // handleLogin()
-var handleLogin = function handleLogin(e) {
+const handleLogin = e => {
   // Preventing default redirect behavior + hiding the Domo error
   e.preventDefault();
   $('#domoMessage').animate({ width: 'hide' }, 350);
@@ -22,7 +18,7 @@ var handleLogin = function handleLogin(e) {
 };
 
 // handleSignup()
-var handleSignup = function handleSignup(e) {
+const handleSignup = e => {
   // Preventing default redirect behavior + hiding the Domo error
   e.preventDefault();
   $('#domoMessage').animate({ width: 'hide' }, 350);
@@ -46,7 +42,7 @@ var handleSignup = function handleSignup(e) {
 };
 
 // LoginWindow()
-var LoginWindow = function LoginWindow(props) {
+const LoginWindow = props => {
   return React.createElement(
     'div',
     { className: 'text-center', id: 'bodyContainer' },
@@ -83,7 +79,7 @@ var LoginWindow = function LoginWindow(props) {
       React.createElement('br', null),
       React.createElement(
         'button',
-        _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
+        { className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit', type: 'submit' },
         'Sign in'
       ),
       React.createElement('br', null),
@@ -97,7 +93,7 @@ var LoginWindow = function LoginWindow(props) {
 };
 
 // SignupWindow()
-var SignupWindow = function SignupWindow(props) {
+const SignupWindow = props => {
   return React.createElement(
     'div',
     { className: 'text-center', id: 'bodyContainer' },
@@ -140,7 +136,7 @@ var SignupWindow = function SignupWindow(props) {
       React.createElement('br', null),
       React.createElement(
         'button',
-        _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
+        { className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit', type: 'submit' },
         'Sign Up'
       ),
       React.createElement('br', null),
@@ -154,28 +150,28 @@ var SignupWindow = function SignupWindow(props) {
 };
 
 // createLoginWindow()
-var createLoginWindow = function createLoginWindow(csrf) {
+const createLoginWindow = csrf => {
   console.log('Create Login Window');
   ReactDOM.render(React.createElement(LoginWindow, { csrf: csrf }), document.querySelector('#content'));
 };
 
 // createSignupWindow()
-var createSignupWindow = function createSignupWindow(csrf) {
+const createSignupWindow = csrf => {
   ReactDOM.render(React.createElement(SignupWindow, { csrf: csrf }), document.querySelector('#content'));
 };
 
 // setup()
-var setup = function setup(csrf) {
-  var loginButton = document.querySelector('#loginButton');
-  var signupButton = document.querySelector('#signupButton');
+const setup = csrf => {
+  const loginButton = document.querySelector('#loginButton');
+  const signupButton = document.querySelector('#signupButton');
 
-  signupButton.addEventListener('click', function (e) {
+  signupButton.addEventListener('click', e => {
     e.preventDefault();
     createSignupWindow(csrf);
     return false;
   });
 
-  loginButton.addEventListener('click', function (e) {
+  loginButton.addEventListener('click', e => {
     e.preventDefault();
     createLoginWindow(csrf);
     return false;
@@ -186,8 +182,8 @@ var setup = function setup(csrf) {
 };
 
 // getToken()
-var getToken = function getToken() {
-  sendAjax('GET', '/getToken', null, function (result) {
+const getToken = () => {
+  sendAjax('GET', '/getToken', null, result => {
     setup(result.csrfToken);
   });
 };
@@ -196,10 +192,8 @@ var getToken = function getToken() {
 $(document).ready(function () {
   getToken();
 });
-'use strict';
-
 // handleError()
-var handleError = function handleError(msg) {
+const handleError = msg => {
   /*
   $('#errorMessage').text(msg);
   $('#domoMessage').animate({ width: 'toggle' }, 350);
@@ -209,13 +203,13 @@ var handleError = function handleError(msg) {
 };
 
 // redirect()
-var redirect = function redirect(response) {
+const redirect = response => {
   $('#domoMessage').animate({ width: 'hide' }, 350);
   window.location = response.redirect;
 };
 
 // sendAjax()
-var sendAjax = function sendAjax(type, action, data, success) {
+const sendAjax = (type, action, data, success) => {
   $.ajax({
     cache: false,
     type: type,
@@ -223,7 +217,7 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: 'json',
     success: success,
-    error: function error(xhr, status, _error) {
+    error: function (xhr, status, error) {
       console.log(xhr.responseText);
       var msgObj = JSON.parse(xhr.responseText);
       handleError(msgObj.error);
