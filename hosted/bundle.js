@@ -44,8 +44,6 @@ const DomoForm = props => {
     document.getElementById("domoForm").style.display = "block";
   };
 
-  var tDate = Date.now();
-
   return React.createElement(
     "form",
     { id: "domoForm", onSubmit: handleDomo, name: "domoForm", action: "/maker", method: "POST", className: "domoForm" },
@@ -67,15 +65,16 @@ const DomoForm = props => {
         "Contents: "
       ),
       React.createElement("br", null),
-      React.createElement("input", { id: "domoBody", type: "textarea", name: "body", cols: "27", wrap: "hard", placeholder: "Note Contents" }),
+      React.createElement("textarea", { id: "domoBody", name: "body", cols: "27", wrap: "hard", placeholder: "Note Contents" }),
       React.createElement("br", null),
       React.createElement("br", null),
       React.createElement(
         "label",
-        { "for": "dueDate" },
+        { "for": "duedate" },
         "Due date (Optional):"
       ),
-      React.createElement("input", { type: "date", id: "dueDate", name: "dueDate" }),
+      React.createElement("br", null),
+      React.createElement("input", { type: "date", id: "duedate", name: "duedate" }),
       React.createElement("br", null),
       React.createElement("br", null),
       React.createElement(
@@ -138,36 +137,33 @@ const DomoList = function (props) {
   }
 
   const domoNodes = props.domos.map(function (domo) {
-    console.dir(domo);
-    console.dir(domo.date);
-    console.dir(domo.duedate);
 
     if (domo.date != domo.duedate) {
       return React.createElement(
         "div",
         { key: domo._id, className: domo.colour },
-        React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
         React.createElement(
           "h3",
           { className: "domoTitle" },
           domo.title
         ),
         React.createElement(
-          "div",
-          { className: "domoBody" },
-          domo.body
-        ),
-        React.createElement(
-          "h4",
-          { className: "domoDate" },
-          "Created: ",
-          domo.date
-        ),
-        React.createElement(
           "h4",
           { className: "domoDate" },
           "Scheduled: ",
-          domo.duedate
+          React.createElement("br", null),
+          " ",
+          React.createElement(
+            "a",
+            { href: "https://www.google.com/calendar/render?action=TEMPLATE&text=" + domo.title + "&dates=" + domo.duedate.substring(6, 10) + domo.duedate.substring(0, 2) + domo.duedate.substring(3, 5) + "T224000Z/" + domo.duedate.substring(6, 10) + domo.duedate.substring(0, 2) + domo.duedate.substring(3, 5) + "T221500Z&details=" + domo.body },
+            domo.duedate,
+            "  "
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "domoBody" },
+          domo.body
         ),
         React.createElement(
           "form",
@@ -186,22 +182,24 @@ const DomoList = function (props) {
       return React.createElement(
         "div",
         { key: domo._id, className: domo.colour },
-        React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
         React.createElement(
           "h3",
           { className: "domoTitle" },
           domo.title
         ),
         React.createElement(
-          "div",
-          { className: "domoBody" },
-          domo.body
-        ),
-        React.createElement(
           "h4",
           { className: "domoDate" },
           "Created: ",
-          domo.date
+          React.createElement("br", null),
+          " ",
+          domo.date,
+          "  "
+        ),
+        React.createElement(
+          "div",
+          { className: "domoBody" },
+          domo.body
         ),
         React.createElement(
           "form",
@@ -226,9 +224,20 @@ const DomoList = function (props) {
   );
 };
 
+const DomoCount = function (props) {
+  return React.createElement(
+    "div",
+    null,
+    "Notes: ",
+    props.domos.length
+  );
+};
+
 const loadDomosFromServer = csrf => {
   sendAjax('GET', '/getDomos', null, data => {
     ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
+
+    ReactDOM.render(React.createElement(DomoCount, { domos: data.domos, csrf: csrf }), document.querySelector("#count"));
   });
 };
 
@@ -242,6 +251,8 @@ const setup = function (csrf) {
   ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
 
   ReactDOM.render(React.createElement(DomoList, { domos: [], csrf: csrf }), document.querySelector("#domos"));
+
+  ReactDOM.render(React.createElement(DomoCount, { domos: [], csrf: csrf }), document.querySelector("#count"));
 
   loadDomosFromServer(csrf);
 };

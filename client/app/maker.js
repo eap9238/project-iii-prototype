@@ -44,8 +44,6 @@ const DomoForm = (props) => {
       document.getElementById("domoForm").style.display = "block";
   };
     
-  var tDate = Date.now();
-    
   return (
     <form id="domoForm" onSubmit={handleDomo} name="domoForm" action="/maker" method="POST" className="domoForm">
         <div className="DomoFormObject"> 
@@ -58,14 +56,16 @@ const DomoForm = (props) => {
       
             <label htmlFor="body">Contents: </label>
             <br/>
-            <input id="domoBody" type="textarea" name="body" cols="27" wrap="hard" placeholder="Note Contents"/>
+            <textarea id="domoBody" name="body" cols="27" wrap="hard" placeholder="Note Contents"/>
       
             <br/>
             <br/>
             
-            <label for="dueDate">Due date (Optional):</label>
-
-            <input type="date" id="dueDate" name="dueDate"/>
+            <label for="duedate">Due date (Optional):</label>
+    
+            <br/>
+      
+            <input type="date" id="duedate" name="duedate"/>
 
             <br/>
             <br/>
@@ -91,7 +91,7 @@ const DomoForm = (props) => {
   );
 };
 
-const DomoList = function(props) {
+const DomoList = function(props) {    
   if(props.domos.length === 0) {
     return (
       <div className="domoList">
@@ -105,24 +105,19 @@ const DomoList = function(props) {
   }
 
   const domoNodes = props.domos.map(function(domo) {
-    console.dir(domo);
-    console.dir(domo.date);
-    console.dir(domo.duedate);
       
     if (domo.date != domo.duedate) {
         return (
           <div key={domo._id} className={domo.colour}>
-            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
             <h3 className="domoTitle">{domo.title}</h3>
+            <h4 className="domoDate">Scheduled: <br/> <a href={"https://www.google.com/calendar/render?action=TEMPLATE&text=" + domo.title + "&dates=" + domo.duedate.substring(6,10) + domo.duedate.substring(0,2) + domo.duedate.substring(3,5) + "T224000Z/" + domo.duedate.substring(6,10) + domo.duedate.substring(0,2) + domo.duedate.substring(3,5) + "T221500Z&details=" + domo.body}>{domo.duedate}  </a></h4>
             <div className="domoBody">{domo.body}</div>
-            <h4 className="domoDate">Created: {domo.date}</h4>
-            <h4 className="domoDate">Scheduled: {domo.duedate}</h4>
             <form id={domo._id}
                   onSubmit={handleDelete}
                   name="deleteDomo"
                   action="/deleteDomo"
                   method="DELETE"
-            >
+            >            
                 <input type="hidden" name="_id" value={domo._id}/>
                 <input type="hidden" id="token" name="_csrf" value={props.csrf}/>
                 <input className="makeDomoDelete" type="submit" value="X"/>
@@ -133,10 +128,9 @@ const DomoList = function(props) {
     else {
         return (
           <div key={domo._id} className={domo.colour}>
-            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace"/>
             <h3 className="domoTitle">{domo.title}</h3>
+            <h4 className="domoDate">Created: <br/> {domo.date}  </h4>
             <div className="domoBody">{domo.body}</div>
-            <h4 className="domoDate">Created: {domo.date}</h4>
             <form id={domo._id}
                   onSubmit={handleDelete}
                   name="deleteDomo"
@@ -159,10 +153,22 @@ const DomoList = function(props) {
   );
 };
 
+const DomoCount = function(props) {
+    return (
+        <div>
+            Notes: {props.domos.length}
+        </div>
+    );
+};
+
 const loadDomosFromServer = (csrf) => {
   sendAjax('GET', '/getDomos', null, (data) => {
     ReactDOM.render(
       <DomoList domos={data.domos} csrf={csrf}/>, document.querySelector("#domos")
+    );
+
+    ReactDOM.render(
+      <DomoCount domos={data.domos} csrf={csrf}/>, document.querySelector("#count")
     );
   });
 };
@@ -180,6 +186,10 @@ const setup = function(csrf) {
 
   ReactDOM.render(
     <DomoList domos={[]} csrf={csrf}/>, document.querySelector("#domos")
+  );
+
+  ReactDOM.render(
+    <DomoCount domos={[]} csrf={csrf}/>, document.querySelector("#count")
   );
 
   loadDomosFromServer(csrf);

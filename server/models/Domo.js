@@ -27,11 +27,11 @@ const DomoSchema = new mongoose.Schema({
   },
   date: {
     type: String,
-    default: `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`,
+    default: `${new Date().toISOString().substring(5, 7)}/${new Date().toISOString().substring(8, 10)}/${new Date().toISOString().substring(0, 4)}`,
   },
   duedate: {
     type: String,
-    default:  `${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`,
+    default:  `${new Date().toISOString().substring(5, 7)}/${new Date().toISOString().substring(8, 10)}/${new Date().toISOString().substring(0, 4)}`,
   },
   colour: {
     type: String,
