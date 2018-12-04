@@ -8,6 +8,9 @@ let DomoModel = {};
 // converts string ID to real mongo ID
 const convertID = mongoose.Types.ObjectId;
 const setTitle = (title) => _.escape(title).trim();
+let date = `${new Date().toISOString().substring(5, 7)}`;
+date += `/${new Date().toISOString().substring(8, 10)}`;
+date += `/${new Date().toISOString().substring(0, 4)}`;
 
 const DomoSchema = new mongoose.Schema({
   title: {
@@ -27,11 +30,11 @@ const DomoSchema = new mongoose.Schema({
   },
   date: {
     type: String,
-    default: `${new Date().toISOString().substring(5, 7)}/${new Date().toISOString().substring(8, 10)}/${new Date().toISOString().substring(0, 4)}`,
+    default: date,
   },
   duedate: {
     type: String,
-    default:  `${new Date().toISOString().substring(5, 7)}/${new Date().toISOString().substring(8, 10)}/${new Date().toISOString().substring(0, 4)}`,
+    default: date,
   },
   colour: {
     type: String,
