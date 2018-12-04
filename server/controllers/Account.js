@@ -93,7 +93,7 @@ const changeup = (request, response) => {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
 
-  return Account.AccountModel.authenticate(username, oldpass, (err, account) => {
+  return Account.AccountModel.authenticate('lane', '123', (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
     }
