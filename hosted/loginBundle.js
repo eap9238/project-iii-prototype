@@ -1,5 +1,9 @@
+'use strict';
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 // handleLogin()
-const handleLogin = e => {
+var handleLogin = function handleLogin(e) {
   // Preventing default redirect behavior + hiding the Domo error
   e.preventDefault();
   $('#domoMessage').animate({ width: 'hide' }, 350);
@@ -18,7 +22,7 @@ const handleLogin = e => {
 };
 
 // handleSignup()
-const handleSignup = e => {
+var handleSignup = function handleSignup(e) {
   // Preventing default redirect behavior + hiding the Domo error
   e.preventDefault();
   $('#domoMessage').animate({ width: 'hide' }, 350);
@@ -42,7 +46,7 @@ const handleSignup = e => {
 };
 
 // LoginWindow()
-const LoginWindow = props => {
+var LoginWindow = function LoginWindow(props) {
   return React.createElement(
     'div',
     { className: 'text-center', id: 'bodyContainer' },
@@ -79,7 +83,7 @@ const LoginWindow = props => {
       React.createElement('br', null),
       React.createElement(
         'button',
-        { className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit', type: 'submit' },
+        _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
         'Sign in'
       ),
       React.createElement('br', null),
@@ -93,7 +97,7 @@ const LoginWindow = props => {
 };
 
 // SignupWindow()
-const SignupWindow = props => {
+var SignupWindow = function SignupWindow(props) {
   return React.createElement(
     'div',
     { className: 'text-center', id: 'bodyContainer' },
@@ -136,7 +140,7 @@ const SignupWindow = props => {
       React.createElement('br', null),
       React.createElement(
         'button',
-        { className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit', type: 'submit' },
+        _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
         'Sign Up'
       ),
       React.createElement('br', null),
@@ -150,28 +154,28 @@ const SignupWindow = props => {
 };
 
 // createLoginWindow()
-const createLoginWindow = csrf => {
+var createLoginWindow = function createLoginWindow(csrf) {
   console.log('Create Login Window');
   ReactDOM.render(React.createElement(LoginWindow, { csrf: csrf }), document.querySelector('#content'));
 };
 
 // createSignupWindow()
-const createSignupWindow = csrf => {
+var createSignupWindow = function createSignupWindow(csrf) {
   ReactDOM.render(React.createElement(SignupWindow, { csrf: csrf }), document.querySelector('#content'));
 };
 
 // setup()
-const setup = csrf => {
-  const loginButton = document.querySelector('#loginButton');
-  const signupButton = document.querySelector('#signupButton');
+var setup = function setup(csrf) {
+  var loginButton = document.querySelector('#loginButton');
+  var signupButton = document.querySelector('#signupButton');
 
-  signupButton.addEventListener('click', e => {
+  signupButton.addEventListener('click', function (e) {
     e.preventDefault();
     createSignupWindow(csrf);
     return false;
   });
 
-  loginButton.addEventListener('click', e => {
+  loginButton.addEventListener('click', function (e) {
     e.preventDefault();
     createLoginWindow(csrf);
     return false;
@@ -182,8 +186,8 @@ const setup = csrf => {
 };
 
 // getToken()
-const getToken = () => {
-  sendAjax('GET', '/getToken', null, result => {
+var getToken = function getToken() {
+  sendAjax('GET', '/getToken', null, function (result) {
     setup(result.csrfToken);
   });
 };
@@ -192,8 +196,10 @@ const getToken = () => {
 $(document).ready(function () {
   getToken();
 });
+'use strict';
+
 // handleError()
-const handleError = msg => {
+var handleError = function handleError(msg) {
   /*
   $('#errorMessage').text(msg);
   $('#domoMessage').animate({ width: 'toggle' }, 350);
@@ -203,13 +209,13 @@ const handleError = msg => {
 };
 
 // redirect()
-const redirect = response => {
+var redirect = function redirect(response) {
   $('#domoMessage').animate({ width: 'hide' }, 350);
   window.location = response.redirect;
 };
 
 // sendAjax()
-const sendAjax = (type, action, data, success) => {
+var sendAjax = function sendAjax(type, action, data, success) {
   $.ajax({
     cache: false,
     type: type,
@@ -217,7 +223,7 @@ const sendAjax = (type, action, data, success) => {
     data: data,
     dataType: 'json',
     success: success,
-    error: function (xhr, status, error) {
+    error: function error(xhr, status, _error) {
       console.log(xhr.responseText);
       var msgObj = JSON.parse(xhr.responseText);
       handleError(msgObj.error);

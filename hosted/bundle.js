@@ -1,4 +1,6 @@
-const handleDomo = e => {
+"use strict";
+
+var handleDomo = function handleDomo(e) {
   e.preventDefault();
 
   $("#domoMessage").animate({ width: 'hide' }, 350);
@@ -17,19 +19,19 @@ const handleDomo = e => {
   return false;
 };
 
-const showModal = e => {
+var showModal = function showModal(e) {
   //e.preventDefault();
   console.log("Yo");
   //document.getElementById("domoForm").style.display = "block";
 };
 
-const hideModal = e => {
+var hideModal = function hideModal(e) {
   e.preventDefault();
 
   document.getElementById("domoForm").style.display = "none";
 };
 
-const handleDelete = e => {
+var handleDelete = function handleDelete(e) {
   e.preventDefault();
 
   $("#domoMessage").animate({ width: 'hide' }, 350);
@@ -39,7 +41,7 @@ const handleDelete = e => {
   });
 };
 
-const DomoForm = props => {
+var DomoForm = function DomoForm(props) {
   document.getElementById("modal").onclick = function () {
     document.getElementById("domoForm").style.display = "block";
   };
@@ -121,7 +123,7 @@ const DomoForm = props => {
   );
 };
 
-const DomoList = function (props) {
+var DomoList = function DomoList(props) {
   if (props.domos.length === 0) {
     return React.createElement(
       "div",
@@ -136,7 +138,7 @@ const DomoList = function (props) {
     );
   }
 
-  const domoNodes = props.domos.map(function (domo) {
+  var domoNodes = props.domos.map(function (domo) {
 
     if (domo.date != domo.duedate) {
       return React.createElement(
@@ -224,7 +226,7 @@ const DomoList = function (props) {
   );
 };
 
-const DomoCount = function (props) {
+var DomoCount = function DomoCount(props) {
   return React.createElement(
     "div",
     null,
@@ -233,15 +235,15 @@ const DomoCount = function (props) {
   );
 };
 
-const loadDomosFromServer = csrf => {
-  sendAjax('GET', '/getDomos', null, data => {
+var loadDomosFromServer = function loadDomosFromServer(csrf) {
+  sendAjax('GET', '/getDomos', null, function (data) {
     ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
 
     ReactDOM.render(React.createElement(DomoCount, { domos: data.domos, csrf: csrf }), document.querySelector("#count"));
   });
 };
 
-const setup = function (csrf) {
+var setup = function setup(csrf) {
   /*
     ReactDOM.render(
     <ModalForm csrf={csrf} />, document.querySelector("#modalManager")
@@ -257,8 +259,8 @@ const setup = function (csrf) {
   loadDomosFromServer(csrf);
 };
 
-const getToken = () => {
-  sendAjax('GET', '/getToken', null, result => {
+var getToken = function getToken() {
+  sendAjax('GET', '/getToken', null, function (result) {
     setup(result.csrfToken);
   });
 };
@@ -266,8 +268,10 @@ const getToken = () => {
 $(document).ready(function () {
   getToken();
 });
+'use strict';
+
 // handleError()
-const handleError = msg => {
+var handleError = function handleError(msg) {
   /*
   $('#errorMessage').text(msg);
   $('#domoMessage').animate({ width: 'toggle' }, 350);
@@ -277,13 +281,13 @@ const handleError = msg => {
 };
 
 // redirect()
-const redirect = response => {
+var redirect = function redirect(response) {
   $('#domoMessage').animate({ width: 'hide' }, 350);
   window.location = response.redirect;
 };
 
 // sendAjax()
-const sendAjax = (type, action, data, success) => {
+var sendAjax = function sendAjax(type, action, data, success) {
   $.ajax({
     cache: false,
     type: type,
@@ -291,7 +295,7 @@ const sendAjax = (type, action, data, success) => {
     data: data,
     dataType: 'json',
     success: success,
-    error: function (xhr, status, error) {
+    error: function error(xhr, status, _error) {
       console.log(xhr.responseText);
       var msgObj = JSON.parse(xhr.responseText);
       handleError(msgObj.error);
