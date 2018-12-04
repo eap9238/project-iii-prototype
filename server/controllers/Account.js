@@ -77,33 +77,6 @@ const signup = (request, response) => {
   });
 };
 
-const changeup = (request, response) => {
-  const req = request;
-  const res = response;
-
-  req.body.oldpass = `${req.body.oldpass}`;
-  req.body.pass = `${req.body.pass}`;
-  req.body.pass2 = `${req.body.pass2}`;
-
-  if (!req.body.oldpass || !req.body.pass || !req.body.pass2) {
-    return res.status(400).json({ error: 'Please fill all fields' });
-  }
-
-  if (req.body.pass !== req.body.pass2) {
-    return res.status(400).json({ error: 'New passwords do not match!' });
-  }
-
-  return Account.AccountModel.authenticate(username, oldpass, (err, account) => {
-    if (err || !account) {
-      return res.status(401).json({ error: 'Wrong username or password' });
-    }
-
-    req.session.account = Account.AccountModel.toAPI(account);
-
-    return res.json({ redirect: '/maker' });
-  });
-};
-
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -118,6 +91,5 @@ const getToken = (request, response) => {
 module.exports.loginPage = loginPage;
 module.exports.login = login;
 module.exports.logout = logout;
-module.exports.changePassword = changeup;
 module.exports.signup = signup;
 module.exports.getToken = getToken;
