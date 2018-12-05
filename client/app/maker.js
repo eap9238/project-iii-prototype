@@ -153,11 +153,82 @@ const DomoList = function(props) {
   );
 };
 
+// CPassWindow()
+const ChangePasswordWindow = (props) => {
+  return (
+      <div className="text-center" id="bodyContainer">
+        <form   className="form-cPass mainForm"
+                id='cPassForm'
+                name='cPassForm'
+                onSubmit={handleCPass}
+                action='/changePassword'
+                method='POST'
+         >
+
+            <img className="mb-4" src="/assets/img/face.png" alt="" width="146" height="146"/>
+      
+            <br/>
+      
+            <h1 className="h3 mb-3 font-weight-normal">Select a username and password</h1>
+      
+            <br/>
+
+            <label htmlFor="oldPass" className="sr-only">Email address</label>
+            <input id="oldPass" type="text" name='oldPass' className="form-control" required autofocus placeholder="Old Password"/>
+            <label htmlFor="inputPassword" className="sr-only">Password</label>
+            <input id="inputPassword" name='inputPassword' type="password" className="form-control" required placeholder="Password"/>
+            <label htmlFor='inputPassword2' className="sr-only">Password</label>
+            <input id='inputPassword2' name='inputPassword2' type='password'  className="form-control" required placeholder='retype password'/>
+
+            <input type='hidden' name='_csrf' value={props.csrf} />
+      
+            <br/>
+
+            <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Sign Up</button>
+      
+            <br/>
+      
+            <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
+        </form>
+    </div>
+  );
+};
+
+// handleSignup()
+const handleCPass = (e) => {
+  // Preventing default redirect behavior + hiding the Domo error
+  e.preventDefault();
+  $('#domoMessage').animate({ width: 'hide' }, 350);
+  
+  // IF not all of the fields are filled in...
+  if ($('#oldPass').val() == '' || $('#inputPassword').val() == '' || $('#inputPassword2').val() == '') {
+    handleError("Please select options for all fields");
+    return false;
+  }
+  
+  // IF both password fields are not the same...
+  if ($('#inputPassword').val() !== $('#inputPassword2').val()) {
+    handleError("New passwords do not match");
+    return false;
+  }
+  
+  // 
+  sendAjax('POST', $('#cPassForm').attr('action'), $('#cPassForm').serialize(), redirect);
+  
+  return false;
+};
+
+// createSignupWindow()
+const createCPassWindow = (csrf) => {
+  ReactDOM.render(
+    <ChangePasswordWindow csrf={csrf} />,
+    document.querySelector('#content')
+  );
+};
+
 const DomoCount = function(props) {
     return (
-        <div>
-            Notes: {props.domos.length}
-        </div>
+        <a href="#">Notes: {props.domos.length}</a>
     );
 };
 
@@ -174,11 +245,13 @@ const loadDomosFromServer = (csrf) => {
 };
 
 const setup = function(csrf) {
-  /*
-    ReactDOM.render(
-    <ModalForm csrf={csrf} />, document.querySelector("#modalManager")
-  );
-  */
+  const cPassWindow = document.querySelector('#cPassButton');
+  
+  cPassWindow.addEventListener('click', (e) => {
+    e.preventDefault();
+    createCPassWindow(csrf);
+    return false;
+  });
     
   ReactDOM.render(
     <DomoForm csrf={csrf} />, document.querySelector("#makeDomo")

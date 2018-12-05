@@ -1,5 +1,7 @@
 "use strict";
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var handleDomo = function handleDomo(e) {
   e.preventDefault();
 
@@ -226,10 +228,96 @@ var DomoList = function DomoList(props) {
   );
 };
 
-var DomoCount = function DomoCount(props) {
+// CPassWindow()
+var ChangePasswordWindow = function ChangePasswordWindow(props) {
   return React.createElement(
     "div",
-    null,
+    { className: "text-center", id: "bodyContainer" },
+    React.createElement(
+      "form",
+      { className: "form-cPass mainForm",
+        id: "cPassForm",
+        name: "cPassForm",
+        onSubmit: handleCPass,
+        action: "/changePassword",
+        method: "POST"
+      },
+      React.createElement("img", { className: "mb-4", src: "/assets/img/face.png", alt: "", width: "146", height: "146" }),
+      React.createElement("br", null),
+      React.createElement(
+        "h1",
+        { className: "h3 mb-3 font-weight-normal" },
+        "Select a username and password"
+      ),
+      React.createElement("br", null),
+      React.createElement(
+        "label",
+        { htmlFor: "oldPass", className: "sr-only" },
+        "Email address"
+      ),
+      React.createElement("input", { id: "oldPass", type: "text", name: "oldPass", className: "form-control", required: true, autofocus: true, placeholder: "Old Password" }),
+      React.createElement(
+        "label",
+        { htmlFor: "inputPassword", className: "sr-only" },
+        "Password"
+      ),
+      React.createElement("input", { id: "inputPassword", name: "inputPassword", type: "password", className: "form-control", required: true, placeholder: "Password" }),
+      React.createElement(
+        "label",
+        { htmlFor: "inputPassword2", className: "sr-only" },
+        "Password"
+      ),
+      React.createElement("input", { id: "inputPassword2", name: "inputPassword2", type: "password", className: "form-control", required: true, placeholder: "retype password" }),
+      React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+      React.createElement("br", null),
+      React.createElement(
+        "button",
+        _defineProperty({ className: "formSubmit btn btn-lg btn-primary btn-block", type: "submit" }, "type", "submit"),
+        "Sign Up"
+      ),
+      React.createElement("br", null),
+      React.createElement(
+        "p",
+        { "class": "mt-5 mb-3 text-muted" },
+        "\xA9 2018-2019"
+      )
+    )
+  );
+};
+
+// handleSignup()
+var handleCPass = function handleCPass(e) {
+  // Preventing default redirect behavior + hiding the Domo error
+  e.preventDefault();
+  $('#domoMessage').animate({ width: 'hide' }, 350);
+
+  // IF not all of the fields are filled in...
+  if ($('#oldPass').val() == '' || $('#inputPassword').val() == '' || $('#inputPassword2').val() == '') {
+    handleError("Please select options for all fields");
+    return false;
+  }
+
+  // IF both password fields are not the same...
+  if ($('#inputPassword').val() !== $('#inputPassword2').val()) {
+    handleError("New passwords do not match");
+    return false;
+  }
+
+  // 
+  sendAjax('POST', $('#cPassForm').attr('action'), $('#cPassForm').serialize(), redirect);
+
+  return false;
+};
+
+// createSignupWindow()
+var createCPassWindow = function createCPassWindow(csrf) {
+  ReactDOM.render(React.createElement(ChangePasswordWindow, { csrf: csrf }), document.querySelector('#content'));
+};
+
+var DomoCount = function DomoCount(props) {
+  return React.createElement(
+    "a",
+    { href: "#" },
     "Notes: ",
     props.domos.length
   );
@@ -244,11 +332,13 @@ var loadDomosFromServer = function loadDomosFromServer(csrf) {
 };
 
 var setup = function setup(csrf) {
-  /*
-    ReactDOM.render(
-    <ModalForm csrf={csrf} />, document.querySelector("#modalManager")
-  );
-  */
+  var cPassWindow = document.querySelector('#cPassButton');
+
+  cPassWindow.addEventListener('click', function (e) {
+    e.preventDefault();
+    createCPassWindow(csrf);
+    return false;
+  });
 
   ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
 
