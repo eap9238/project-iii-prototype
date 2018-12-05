@@ -81,24 +81,29 @@ const changeup = (request, response) => {
   const req = request;
   const res = response;
 
-  req.body.oldpass = `${req.body.oldpass}`;
-  req.body.pass = `${req.body.pass}`;
-  req.body.pass2 = `${req.body.pass2}`;
+  req.body.oldPass = `${req.body.oldPass}`;
+  req.body.inputPassword = `${req.body.inputPassword}`;
+  req.body.inputPassword2 = `${req.body.inputPassword2}`;
 
-  if (!req.body.oldpass || !req.body.pass || !req.body.pass2) {
+  if (!req.body.oldPass || !req.body.inputPassword || !req.body.inputPassword2) {
     return res.status(400).json({ error: 'Please fill all fields' });
   }
 
-  if (req.body.pass !== req.body.pass2) {
+  if (req.body.inputPassword !== req.body.inputPassword2) {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
+    
+ console.dir(req.body.oldPass);
+ console.dir(req.body.inputPassword);
+ console.dir(Account.AccountModel.generateHash(req.body.oldpass, (salt, hash)).hash);
 
-  return Account.AccountModel.authenticate('lane', '123', (err, account) => {
+  return Account.AccountModel.authenticate(/* get username  */ req.session.account.username, req.body.oldpass, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
     }
 
-    req.session.account = Account.AccountModel.toAPI(account);
+    //req.session.account = Account.AccountModel.toAPI(account);
+      console.dir("Go go power Rangers!");
 
     return res.json({ redirect: '/maker' });
   });

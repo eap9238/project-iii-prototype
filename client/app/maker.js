@@ -173,7 +173,7 @@ const ChangePasswordWindow = (props) => {
       
             <br/>
 
-            <label htmlFor="oldPass" className="sr-only">Email address</label>
+            <label htmlFor="oldPass" className="sr-only">Old Password</label>
             <input id="oldPass" type="text" name='oldPass' className="form-control" required autofocus placeholder="Old Password"/>
             <label htmlFor="inputPassword" className="sr-only">Password</label>
             <input id="inputPassword" name='inputPassword' type="password" className="form-control" required placeholder="Password"/>

@@ -253,7 +253,7 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
       React.createElement(
         "label",
         { htmlFor: "oldPass", className: "sr-only" },
-        "Email address"
+        "Old Password"
       ),
       React.createElement("input", { id: "oldPass", type: "text", name: "oldPass", className: "form-control", required: true, autofocus: true, placeholder: "Old Password" }),
       React.createElement(
