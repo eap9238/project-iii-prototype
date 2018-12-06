@@ -42,7 +42,7 @@ nav:nth-child(1) {
     float: right;
 }
 
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
+.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active .navstud a, .navstud a:link, .navstud a:visited, .navstud a:hover, .navstud a:active {
     color: white;
     text-decoration: none;
     padding: 5px;
@@ -98,6 +98,7 @@ nav:nth-child(1) {
 .domoDate {
     float: right;
     margin-right: 10px;
+    margin-left: 10px;
     text-align: right;
 }
 
@@ -108,7 +109,11 @@ nav:nth-child(1) {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 345px;
+    width: 385px;
+}
+
+#domoBody, #domoColour {
+    margin-left: 10px;
 }
 
 .domoForm label {
@@ -116,6 +121,7 @@ nav:nth-child(1) {
     width: 160px;
     margin-left: 10px;
     font-size: 1.2em;
+    /* float: left; */
     /* float: left; */
     color: white;
 }
@@ -653,6 +659,10 @@ div.domoBody {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+#inputPassword2 {
+  border-top: 0px;
 }
 
 

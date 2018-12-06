@@ -169,7 +169,7 @@ const ChangePasswordWindow = (props) => {
       
             <br/>
       
-            <h1 className="h3 mb-3 font-weight-normal">Select a username and password</h1>
+            <h1 className="h3 mb-3 font-weight-normal">Fill in old and new passwords</h1>
       
             <br/>
 
@@ -184,7 +184,7 @@ const ChangePasswordWindow = (props) => {
       
             <br/>
 
-            <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Sign Up</button>
+            <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Change Password</button>
       
             <br/>
       

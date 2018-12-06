@@ -247,7 +247,7 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
       React.createElement(
         "h1",
         { className: "h3 mb-3 font-weight-normal" },
-        "Select a username and password"
+        "Fill in old and new passwords"
       ),
       React.createElement("br", null),
       React.createElement(
@@ -273,7 +273,7 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
       React.createElement(
         "button",
         _defineProperty({ className: "formSubmit btn btn-lg btn-primary btn-block", type: "submit" }, "type", "submit"),
-        "Sign Up"
+        "Change Password"
       ),
       React.createElement("br", null),
       React.createElement(

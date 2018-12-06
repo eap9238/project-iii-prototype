@@ -92,12 +92,14 @@ const changeup = (request, response) => {
   if (req.body.inputPassword !== req.body.inputPassword2) {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
-    
- console.dir(req.body.oldPass);
- console.dir(req.body.inputPassword);
- console.dir(Account.AccountModel.generateHash(req.body.oldpass, (salt, hash)).hash);
 
-  return Account.AccountModel.authenticate(/* get username  */ req.session.account.username, req.body.oldpass, (err, account) => {
+  console.dir(req.body.oldPass);
+  console.dir(req.body.inputPassword);
+
+  console.dir(req.session.account.password);
+
+    /*
+  return Account.AccountModel.authenticate(req.session.account.username, req.body.oldpass, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
     }
@@ -107,6 +109,7 @@ const changeup = (request, response) => {
 
     return res.json({ redirect: '/maker' });
   });
+    */
 };
 
 const getToken = (request, response) => {
