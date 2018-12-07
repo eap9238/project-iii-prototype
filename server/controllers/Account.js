@@ -97,19 +97,32 @@ const changeup = (request, response) => {
   console.dir(req.body.inputPassword);
 
   console.dir(req.session.account.password);
+    
+    Account.AccountModel.generateHash(req.body.oldPass, (salt, hash) => {
+        const accountData = {
+            salt,
+            password: hash,
+        };
+        
+        console.dir(hash);
+        console.dir(salt);
+        
+        console.dir(req.session.account.username);
+        console.dir(req.session.account.password);
+        
+        console.dir(accountData.password);
+        
+        Account.AccountModel.authenticate(req.session.account.username, accountData.password, (err, account) => {
+            if (err || !account) {
+                return res.status(401).json({ error: 'Wrong username or password' });
+            }
 
-    /*
-  return Account.AccountModel.authenticate(req.session.account.username, req.body.oldpass, (err, account) => {
-    if (err || !account) {
-      return res.status(401).json({ error: 'Wrong username or password' });
-    }
+            //req.session.account = Account.AccountModel.toAPI(account);
+            console.dir("Go go power Rangers!");
 
-    //req.session.account = Account.AccountModel.toAPI(account);
-      console.dir("Go go power Rangers!");
-
-    return res.json({ redirect: '/maker' });
-  });
-    */
+            return res.json({ redirect: '/maker' });
+        });
+    });
 };
 
 const getToken = (request, response) => {
