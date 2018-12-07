@@ -50,6 +50,26 @@ const validatePassword = (doc, password, callback) => {
   });
 };
 
+AccountSchema.statics.changePassword = (username, password, callback) => 
+AccountModel.findByUsername(username, (err, doc) => {
+    
+    console.dir(password);
+    
+    return crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => {
+        if (err) {
+            return callback(err);
+        }
+    
+        console.dir(doc.password);
+        console.dir(hash.toString('hex'));
+
+        doc.password = (hash.toString('hex'));
+        console.dir(doc.password);
+
+        return callback(true);
+    });
+});
+
 AccountSchema.statics.findByUsername = (name, callback) => {
   const search = {
     username: name,

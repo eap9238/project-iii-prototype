@@ -96,31 +96,54 @@ const changeup = (request, response) => {
   console.dir(req.body.oldPass);
   console.dir(req.body.inputPassword);
 
-  console.dir(req.session.account.password);
+  //console.dir(req.session.account.password);
     
-    Account.AccountModel.generateHash(req.body.oldPass, (salt, hash) => {
-        const accountData = {
-            salt,
-            password: hash,
-        };
+    Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+        if (err || !account) {
+            return res.status(401).json({ error: 'Wrong username or password' });
+        }
         
-        console.dir(hash);
-        console.dir(salt);
-        
-        console.dir(req.session.account.username);
-        console.dir(req.session.account.password);
-        
-        console.dir(accountData.password);
-        
-        Account.AccountModel.authenticate(req.session.account.username, accountData.password, (err, account) => {
-            if (err || !account) {
-                return res.status(401).json({ error: 'Wrong username or password' });
-            }
+        console.dir("Go go power Rangers!");
 
-            //req.session.account = Account.AccountModel.toAPI(account);
-            console.dir("Go go power Rangers!");
+        return Account.AccountModel.changePassword(req.session.account.username, req.body.inputPassword, (err, account) => {
+            console.dir(req.session.account.username);
+            console.dir(req.session.account.password);
+            
+            Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+                if (err || !account) {
+                    return res.status(401).json({ error: 'Old password sucks' });
+                }
 
-            return res.json({ redirect: '/maker' });
+                console.dir("Go go old power Rangers!");
+            });
+            
+            Account.AccountModel.authenticate(req.session.account.username, req.body.inputPassword, (err, account) => {
+                if (err || !account) {
+                    return res.status(401).json({ error: 'New password sucks' });
+                }
+
+                console.dir("Go go new power Rangers!");
+            });
+            
+            /*
+            const newAccount = new Account.AccountModel(accountData);
+
+            const savePromise = newAccount.save();
+
+            savePromise.then(() => {
+                req.session.account = Account.AccountModel.toAPI(newAccount);
+                res.json({ redirect: '/maker' });
+            });
+
+            savePromise.catch((err) => {
+                console.log(err);
+
+                if (err.code === 11000) {
+                    return res.status(400).json({ error: 'Username already in use.' });
+                }
+
+                return res.status(400).json({ error: 'An error occured' });
+                */
         });
     });
 };
