@@ -127,6 +127,7 @@ var DomoForm = function DomoForm(props) {
 
 var DomoList = function DomoList(props) {
   document.getElementById("return").style.display = "none";
+  document.getElementById("cPassButton").style.display = "none";
 
   if (props.domos.length === 0) {
     return React.createElement(
@@ -233,6 +234,8 @@ var DomoList = function DomoList(props) {
 // CPassWindow()
 var ChangePasswordWindow = function ChangePasswordWindow(props) {
   document.getElementById("return").style.display = "inline";
+  document.getElementById("mAccount").style.display = "inline";
+  document.getElementById("cPassButton").style.display = "none";
   document.getElementById("domos").style.display = "none";
   document.getElementById("modal").style.display = "none";
 
@@ -291,6 +294,21 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
   );
 };
 
+// My Account Window()
+var MyAccountWindow = function MyAccountWindow(props) {
+  document.getElementById("return").style.display = "inline";
+  document.getElementById("cPassButton").style.display = "inline";
+  document.getElementById("mAccount").style.display = "none";
+  document.getElementById("domos").style.display = "none";
+  document.getElementById("modal").style.display = "none";
+
+  return React.createElement(
+    "div",
+    { className: "text-center", id: "bodyContainer" },
+    "Pendleton"
+  );
+};
+
 // handleSignup()
 var handleCPass = function handleCPass(e) {
   // Preventing default redirect behavior + hiding the Domo error
@@ -315,9 +333,14 @@ var handleCPass = function handleCPass(e) {
   return false;
 };
 
-// createSignupWindow()
+// createChangePasswordWindow()
 var createCPassWindow = function createCPassWindow(csrf) {
   ReactDOM.render(React.createElement(ChangePasswordWindow, { csrf: csrf }), document.querySelector('#content'));
+};
+
+// createMyAccountWindow()
+var createMyAccount = function createMyAccount(csrf) {
+  ReactDOM.render(React.createElement(MyAccountWindow, { csrf: csrf }), document.querySelector('#content'));
 };
 
 var DomoCount = function DomoCount(props) {
@@ -339,10 +362,17 @@ var loadDomosFromServer = function loadDomosFromServer(csrf) {
 
 var setup = function setup(csrf) {
   var cPassWindow = document.querySelector('#cPassButton');
+  var mAccountWindow = document.querySelector('#mAccount');
 
   cPassWindow.addEventListener('click', function (e) {
     e.preventDefault();
     createCPassWindow(csrf);
+    return false;
+  });
+
+  mAccountWindow.addEventListener('click', function (e) {
+    e.preventDefault();
+    createMyAccount(csrf);
     return false;
   });
 

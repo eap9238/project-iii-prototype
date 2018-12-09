@@ -93,6 +93,7 @@ const DomoForm = (props) => {
 
 const DomoList = function(props) { 
   document.getElementById("return").style.display = "none";
+  document.getElementById("cPassButton").style.display = "none";
     
   if(props.domos.length === 0) {
     return (
@@ -158,6 +159,8 @@ const DomoList = function(props) {
 // CPassWindow()
 const ChangePasswordWindow = (props) => {
   document.getElementById("return").style.display = "inline";
+  document.getElementById("mAccount").style.display = "inline";
+  document.getElementById("cPassButton").style.display = "none";
   document.getElementById("domos").style.display = "none";
   document.getElementById("modal").style.display = "none";
     
@@ -200,6 +203,21 @@ const ChangePasswordWindow = (props) => {
   );
 };
 
+// My Account Window()
+const MyAccountWindow = (props) => {
+  document.getElementById("return").style.display = "inline";
+  document.getElementById("cPassButton").style.display = "inline";
+  document.getElementById("mAccount").style.display = "none";
+  document.getElementById("domos").style.display = "none";
+  document.getElementById("modal").style.display = "none";
+    
+  return (
+      <div className="text-center" id="bodyContainer">
+        Pendleton
+    </div>
+  );
+};
+
 // handleSignup()
 const handleCPass = (e) => {
   // Preventing default redirect behavior + hiding the Domo error
@@ -224,10 +242,18 @@ const handleCPass = (e) => {
   return false;
 };
 
-// createSignupWindow()
+// createChangePasswordWindow()
 const createCPassWindow = (csrf) => {
   ReactDOM.render(
     <ChangePasswordWindow csrf={csrf} />,
+    document.querySelector('#content')
+  );
+};
+
+// createMyAccountWindow()
+const createMyAccount = (csrf) => {
+  ReactDOM.render(
+    <MyAccountWindow csrf={csrf} />,
     document.querySelector('#content')
   );
 };
@@ -252,10 +278,17 @@ const loadDomosFromServer = (csrf) => {
 
 const setup = function(csrf) {
   const cPassWindow = document.querySelector('#cPassButton');
+  const mAccountWindow = document.querySelector('#mAccount');
   
   cPassWindow.addEventListener('click', (e) => {
     e.preventDefault();
     createCPassWindow(csrf);
+    return false;
+  });
+  
+  mAccountWindow.addEventListener('click', (e) => {
+    e.preventDefault();
+    createMyAccount(csrf);
     return false;
   });
     

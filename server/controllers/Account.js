@@ -85,6 +85,10 @@ const changeup = (request, response) => {
   req.body.inputPassword = `${req.body.inputPassword}`;
   req.body.inputPassword2 = `${req.body.inputPassword2}`;
 
+  const opas = req.body.oldPass;
+  const npas = req.body.inputPassword;
+  const usr = req.session.account.username;
+
   if (!req.body.oldPass || !req.body.inputPassword || !req.body.inputPassword2) {
     return res.status(400).json({ error: 'Please fill all fields' });
   }
@@ -93,32 +97,36 @@ const changeup = (request, response) => {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
 
-  Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+  Account.AccountModel.authenticate(usr, opas, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
     }
 
-    Account.AccountModel.changePassword(req.session.account.username, req.body.inputPassword, (err, account) => {
-      if (err || !account) {
+    Account.AccountModel.changePassword(usr, npas, (err2, account2) => {
+      if (err2 || !account2) {
         return res.status(401).json({ error: 'Password Change Failed' });
       }
 
-      console.dir('Password changed');
+      // console.dir('Password changed');
+      res.status(200).json({
+        message: 'Password changed',
+      });
 
-      res.statusMessage = 'Password changed';
-      return res.status(200).json({ error: 'An error occured' });
+      return res;
     });
 
-    console.dir('Password changed');
+    // console.dir('Password changed');
 
     res.json({ redirect: '/maker' });
 
     res.statusMessage = 'Password changed';
-    return res.status(200).json({ error: 'An error occured' });
+    return res;
 
         // res.statusMessage = "Password changed";
         // return res.status(200).json({ error: 'An error occured' });
   });
+
+  return res;
 };
 
 const getToken = (request, response) => {
