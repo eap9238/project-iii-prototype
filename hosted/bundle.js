@@ -126,6 +126,8 @@ var DomoForm = function DomoForm(props) {
 };
 
 var DomoList = function DomoList(props) {
+  document.getElementById("return").style.display = "none";
+
   if (props.domos.length === 0) {
     return React.createElement(
       "div",
@@ -230,6 +232,10 @@ var DomoList = function DomoList(props) {
 
 // CPassWindow()
 var ChangePasswordWindow = function ChangePasswordWindow(props) {
+  document.getElementById("return").style.display = "inline";
+  document.getElementById("domos").style.display = "none";
+  document.getElementById("modal").style.display = "none";
+
   return React.createElement(
     "div",
     { className: "text-center", id: "bodyContainer" },
@@ -255,7 +261,7 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
         { htmlFor: "oldPass", className: "sr-only" },
         "Old Password"
       ),
-      React.createElement("input", { id: "oldPass", type: "text", name: "oldPass", className: "form-control", required: true, autofocus: true, placeholder: "Old Password" }),
+      React.createElement("input", { id: "oldPass", type: "password", name: "oldPass", className: "form-control", required: true, autofocus: true, placeholder: "Old Password" }),
       React.createElement(
         "label",
         { htmlFor: "inputPassword", className: "sr-only" },
@@ -317,7 +323,7 @@ var createCPassWindow = function createCPassWindow(csrf) {
 var DomoCount = function DomoCount(props) {
   return React.createElement(
     "a",
-    { href: "#" },
+    { href: "/maker" },
     "Notes: ",
     props.domos.length
   );

@@ -93,7 +93,7 @@ const changeup = (request, response) => {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
     
-    Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+    return Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
         if (err || !account) {
             return res.status(401).json({ error: 'Wrong username or password' });
         }
@@ -102,8 +102,20 @@ const changeup = (request, response) => {
             if (err || !account) {
                 return res.status(401).json({ error: 'Password Change Failed' });
             }
-            return res.json({ redirect: '/maker' });
+            
+            console.dir("Password changed");
+            
+            res.statusMessage = "Password changed";
+            return res.status(200).json();
         });
+            
+        console.dir("An error occured");
+            
+        res.statusMessage = "An error occured";
+        return res.status(200).json();
+
+        //res.statusMessage = "Password changed";
+        //return res.status(200).json({ error: 'An error occured' });
     });
 };
 

@@ -52,7 +52,7 @@ const validatePassword = (doc, password, callback) => {
 
 AccountSchema.statics.changePassword = (username, password, callback) => 
 AccountModel.findByUsername(username, (err, doc) => {    
-    return crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => {
+        return crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => {
         if (err) {
             callback(err);
         }
@@ -61,7 +61,7 @@ AccountModel.findByUsername(username, (err, doc) => {
 
         doc.save((err, updatedDoc) => {
            if(err){
-               return handleError(err);
+               handleError(err);
            }
         });
     });

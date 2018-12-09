@@ -39,7 +39,7 @@ const handleDelete = (e) => {
   });
 };
 
-const DomoForm = (props) => {
+const DomoForm = (props) => {    
   document.getElementById("modal").onclick = function() {
       document.getElementById("domoForm").style.display = "block";
   };
@@ -91,7 +91,9 @@ const DomoForm = (props) => {
   );
 };
 
-const DomoList = function(props) {    
+const DomoList = function(props) { 
+  document.getElementById("return").style.display = "none";
+    
   if(props.domos.length === 0) {
     return (
       <div className="domoList">
@@ -155,6 +157,10 @@ const DomoList = function(props) {
 
 // CPassWindow()
 const ChangePasswordWindow = (props) => {
+  document.getElementById("return").style.display = "inline";
+  document.getElementById("domos").style.display = "none";
+  document.getElementById("modal").style.display = "none";
+    
   return (
       <div className="text-center" id="bodyContainer">
         <form   className="form-cPass mainForm"
@@ -174,7 +180,7 @@ const ChangePasswordWindow = (props) => {
             <br/>
 
             <label htmlFor="oldPass" className="sr-only">Old Password</label>
-            <input id="oldPass" type="text" name='oldPass' className="form-control" required autofocus placeholder="Old Password"/>
+            <input id="oldPass" type="password" name='oldPass' className="form-control" required autofocus placeholder="Old Password"/>
             <label htmlFor="inputPassword" className="sr-only">Password</label>
             <input id="inputPassword" name='inputPassword' type="password" className="form-control" required placeholder="Password"/>
             <label htmlFor='inputPassword2' className="sr-only">Password</label>
@@ -228,7 +234,7 @@ const createCPassWindow = (csrf) => {
 
 const DomoCount = function(props) {
     return (
-        <a href="#">Notes: {props.domos.length}</a>
+        <a href="/maker">Notes: {props.domos.length}</a>
     );
 };
 
