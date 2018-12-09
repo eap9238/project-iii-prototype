@@ -92,30 +92,33 @@ const changeup = (request, response) => {
   if (req.body.inputPassword !== req.body.inputPassword2) {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
-    
-    Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
-        if (err || !account) {
-            return res.status(401).json({ error: 'Wrong username or password' });
-        }
 
-        Account.AccountModel.changePassword(req.session.account.username, req.body.inputPassword, (err, account) => {
-            if (err || !account) {
-                return res.status(401).json({ error: 'Password Change Failed' });
-            }
-            
-            console.dir("Password changed");
-            
-            res.statusMessage = "Password changed";
-            return res.status(200).json({ error: 'An error occured' });
-        });
-            
-        console.dir("Password changed");
-        
-        res.json({ redirect: '/maker' });
+  Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+    if (err || !account) {
+      return res.status(401).json({ error: 'Wrong username or password' });
+    }
 
-        //res.statusMessage = "Password changed";
-        //return res.status(200).json({ error: 'An error occured' });
+    Account.AccountModel.changePassword(req.session.account.username, req.body.inputPassword, (err, account) => {
+      if (err || !account) {
+        return res.status(401).json({ error: 'Password Change Failed' });
+      }
+
+      console.dir('Password changed');
+
+      res.statusMessage = 'Password changed';
+      return res.status(200).json({ error: 'An error occured' });
     });
+
+    console.dir('Password changed');
+
+    res.json({ redirect: '/maker' });
+
+    res.statusMessage = 'Password changed';
+    return res.status(200).json({ error: 'An error occured' });
+
+        // res.statusMessage = "Password changed";
+        // return res.status(200).json({ error: 'An error occured' });
+  });
 };
 
 const getToken = (request, response) => {

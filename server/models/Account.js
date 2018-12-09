@@ -50,22 +50,22 @@ const validatePassword = (doc, password, callback) => {
   });
 };
 
-AccountSchema.statics.changePassword = (username, password, callback) => 
-AccountModel.findByUsername(username, (err, doc) => {    
-        return crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => {
-        if (err) {
-            callback(err);
-        }
+AccountSchema.statics.changePassword = (username, password, callback) =>
+AccountModel.findByUsername(username, (err, doc) =>
+crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (erro, hash) => {
+  if (erro) {
+    callback(erro);
+  }
 
-        doc.password = (hash.toString('hex'));
+  doc.password = (hash.toString('hex'));
+  // doc.setAttribute(password, hash.toString('hex'));
 
-        doc.save((err, updatedDoc) => {
-           if(err){
-               handleError(err);
-           }
-        });
-    });
-});
+  doc.save((error) => {
+    if (error) {
+      callback(error);
+    }
+  });
+}));
 
 AccountSchema.statics.findByUsername = (name, callback) => {
   const search = {
