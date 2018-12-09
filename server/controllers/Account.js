@@ -93,12 +93,16 @@ const changeup = (request, response) => {
     return res.status(400).json({ error: 'New passwords do not match!' });
   }
     
-    return Account.AccountModel.authenticate(req.session.account.username, req.body.oldPass, (err, account) => {
+    const usr = req.session.account.username;
+    const opss = req.body.oldPass;
+    const npss = req.body.inputPassword;
+    
+    return Account.AccountModel.authenticate(usr, opss, (err, account) => {
         if (err || !account) {
             return res.status(401).json({ error: 'Wrong username or password' });
         }
 
-        return Account.AccountModel.changePassword(req.session.account.username, req.body.inputPassword, (err, account) => {
+        return Account.AccountModel.changePassword(usr, npss, (err, account) => {
             if (err || !account) {
                 return res.status(401).json({ error: 'Password Change Failed' });
             }
