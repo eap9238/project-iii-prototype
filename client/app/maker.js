@@ -194,10 +194,6 @@ const ChangePasswordWindow = (props) => {
             <br/>
 
             <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Change Password</button>
-      
-            <br/>
-      
-            <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
         </form>
     </div>
   );
@@ -212,8 +208,7 @@ const MyAccountWindow = (props) => {
   document.getElementById("modal").style.display = "none";
     
   return (
-      <div className="text-center" id="bodyContainer">
-        Pendleton
+      <div id="tContainer">
     </div>
   );
 };
@@ -264,6 +259,38 @@ const DomoCount = function(props) {
     );
 };
 
+const CopyRight = function(props) {    
+    return (
+        <div>Post &copy; {new Date().getFullYear()}</div>
+    );
+};
+
+const NoteCount = function(props) {
+    return (
+        <div className="fullsize">
+            <table>
+                <tr>
+                    <td className="tLeft">Account Name</td>
+                    <td className="tRight">{props.account.accountData.username}</td> 
+                </tr>
+                <tr>
+                    <td className="tLeft">Account Status</td>
+                    <td className="tRight">{props.account.accountData.type}</td> 
+                </tr>
+                <tr>
+                    <td className="tLeft">Account Created</td>
+                    <td className="tRight">{props.account.accountData.createdDate.substring(0, 10)}</td> 
+                </tr>
+                <tr>
+                    <td className="tLeft">Note Count</td>
+                    <td className="tRight">{props.domos.domos.length}</td> 
+                </tr>
+            </table>
+            <button className="tBtn" disabled>Upgrade Account</button>
+        </div>
+    );
+};
+
 const loadDomosFromServer = (csrf) => {
   sendAjax('GET', '/getDomos', null, (data) => {
     ReactDOM.render(
@@ -289,6 +316,18 @@ const setup = function(csrf) {
   mAccountWindow.addEventListener('click', (e) => {
     e.preventDefault();
     createMyAccount(csrf);
+    
+    sendAjax('GET', '/getAccount', null, (acc) => {
+        console.log(acc);
+        
+        sendAjax('GET', '/getDomos', null, (data) => {
+            
+            ReactDOM.render(
+                <NoteCount domos={data} account={acc} csrf={csrf}/>, document.querySelector("#tContainer")
+            );
+        });
+    });
+      
     return false;
   });
     
@@ -302,6 +341,10 @@ const setup = function(csrf) {
 
   ReactDOM.render(
     <DomoCount domos={[]} csrf={csrf}/>, document.querySelector("#count")
+  );
+
+  ReactDOM.render(
+    <CopyRight csrf={csrf}/>, document.querySelector("#copyright")
   );
 
   loadDomosFromServer(csrf);

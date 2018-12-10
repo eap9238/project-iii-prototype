@@ -6,6 +6,10 @@ const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
+const fourofourPage = (req, res) => {
+  res.render('fourofour', { csrfToken: req.csrfToken() });
+};
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
@@ -129,6 +133,19 @@ const changeup = (request, response) => {
   return res;
 };
 
+const getAccount = (request, response) => {
+  const req = request;
+  const res = response;
+    
+  const account = req.session.account;
+    
+  const accountData = {
+    accountData: account,
+  };
+
+  res.json(accountData);
+};
+
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -141,8 +158,10 @@ const getToken = (request, response) => {
 };
 
 module.exports.loginPage = loginPage;
+module.exports.fourofour = fourofourPage;
 module.exports.login = login;
 module.exports.logout = logout;
 module.exports.changePassword = changeup;
+module.exports.getAccount = getAccount;
 module.exports.signup = signup;
 module.exports.getToken = getToken;

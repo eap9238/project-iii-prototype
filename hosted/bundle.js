@@ -283,12 +283,6 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
         "button",
         _defineProperty({ className: "formSubmit btn btn-lg btn-primary btn-block", type: "submit" }, "type", "submit"),
         "Change Password"
-      ),
-      React.createElement("br", null),
-      React.createElement(
-        "p",
-        { "class": "mt-5 mb-3 text-muted" },
-        "\xA9 2018-2019"
       )
     )
   );
@@ -302,11 +296,7 @@ var MyAccountWindow = function MyAccountWindow(props) {
   document.getElementById("domos").style.display = "none";
   document.getElementById("modal").style.display = "none";
 
-  return React.createElement(
-    "div",
-    { className: "text-center", id: "bodyContainer" },
-    "Pendleton"
-  );
+  return React.createElement("div", { id: "tContainer" });
 };
 
 // handleSignup()
@@ -352,6 +342,87 @@ var DomoCount = function DomoCount(props) {
   );
 };
 
+var CopyRight = function CopyRight(props) {
+  return React.createElement(
+    "div",
+    null,
+    "Post \xA9 ",
+    new Date().getFullYear()
+  );
+};
+
+var NoteCount = function NoteCount(props) {
+  return React.createElement(
+    "div",
+    { className: "fullsize" },
+    React.createElement(
+      "table",
+      null,
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          { className: "tLeft" },
+          "Account Name"
+        ),
+        React.createElement(
+          "td",
+          { className: "tRight" },
+          props.account.accountData.username
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          { className: "tLeft" },
+          "Account Status"
+        ),
+        React.createElement(
+          "td",
+          { className: "tRight" },
+          props.account.accountData.type
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          { className: "tLeft" },
+          "Account Created"
+        ),
+        React.createElement(
+          "td",
+          { className: "tRight" },
+          props.account.accountData.createdDate.substring(0, 10)
+        )
+      ),
+      React.createElement(
+        "tr",
+        null,
+        React.createElement(
+          "td",
+          { className: "tLeft" },
+          "Note Count"
+        ),
+        React.createElement(
+          "td",
+          { className: "tRight" },
+          props.domos.domos.length
+        )
+      )
+    ),
+    React.createElement(
+      "button",
+      { className: "tBtn", disabled: true },
+      "Upgrade Account"
+    )
+  );
+};
+
 var loadDomosFromServer = function loadDomosFromServer(csrf) {
   sendAjax('GET', '/getDomos', null, function (data) {
     ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
@@ -373,6 +444,16 @@ var setup = function setup(csrf) {
   mAccountWindow.addEventListener('click', function (e) {
     e.preventDefault();
     createMyAccount(csrf);
+
+    sendAjax('GET', '/getAccount', null, function (acc) {
+      console.log(acc);
+
+      sendAjax('GET', '/getDomos', null, function (data) {
+
+        ReactDOM.render(React.createElement(NoteCount, { domos: data, account: acc, csrf: csrf }), document.querySelector("#tContainer"));
+      });
+    });
+
     return false;
   });
 
@@ -381,6 +462,8 @@ var setup = function setup(csrf) {
   ReactDOM.render(React.createElement(DomoList, { domos: [], csrf: csrf }), document.querySelector("#domos"));
 
   ReactDOM.render(React.createElement(DomoCount, { domos: [], csrf: csrf }), document.querySelector("#count"));
+
+  ReactDOM.render(React.createElement(CopyRight, { csrf: csrf }), document.querySelector("#copyright"));
 
   loadDomosFromServer(csrf);
 };

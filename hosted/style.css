@@ -6,6 +6,64 @@ html, body {
     overflow-x: hidden;
 }
 
+table {
+    margin: 10px;
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+    width: 480px;
+}
+
+td, th {
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+    border: inherit;
+    border-radius: inherit;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+    border: 2px solid #f2f2f2;
+    border-radius: 4px;
+}
+
+.tLeft, .tRight {
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 20px;
+}
+
+.tRight {
+    font-weight: bold;
+}
+
+.tBtn {
+    color: #555555;
+    margin: 10px;
+    font-size: 1.3em;
+    text-decoration: none;
+    padding: 5px;
+    border: 2p solid #dddddd;
+    border-radius: 4px;
+    background-color: #dddddd;
+}
+
+#tContainer {
+    height: calc(100% - (50px));
+    width: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 40px;
+}
+
+#copyright {
+    position: fixed; 
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+}
+
 #logo {
     height: 40px;
     width: 40;
@@ -22,6 +80,11 @@ nav {
 
 nav:nth-child(1) {
     padding-left: 25px;
+}
+
+.fullSize {
+    width: 100%;
+    height: 100%;
 }
 
 .navlink {
@@ -325,8 +388,10 @@ nav:nth-child(1) {
     display: block;
     width: 24px;    
     height: 24px;
-    background-color: #DF2935;
-    border-radius: 2px;
+    background-color: #F0515D;
+    text-align: center;
+    border: 2px solid #F0515D;
+    border-radius: 4px;
     color: white;
     text-decoration: none;
     margin-top: 2px;
@@ -374,8 +439,9 @@ nav:nth-child(1) {
     display: block;
     width: 24px;    
     height: 24px;
-    background-color: #FFAE03;
-    border-radius: 2px;
+    background-color: #FFC03B;
+    border: 2px solid #FFC03B;
+    border-radius: 4px;
     color: white;
     text-decoration: none;
     margin-top: 2px;
@@ -423,8 +489,10 @@ nav:nth-child(1) {
     display: block;
     width: 24px;    
     height: 24px;
-    background-color: #FFE74C;
-    border-radius: 2px;
+    background-color: #FFEC6F;
+    text-align: center;
+    border: 2px solid #FFEC6F;
+    border-radius: 4px;
     color: white;
     text-decoration: none;
     margin-top: 2px;
@@ -472,8 +540,10 @@ nav:nth-child(1) {
     display: block;
     width: 24px;    
     height: 24px;
-    background-color: #35FF69;
-    border-radius: 2px;
+    background-color: #60FF8A;
+    text-align: center;
+    border: 2px solid #60FF8A;
+    border-radius: 4px;
     color: white;
     text-decoration: none;
     margin-top: 2px;
@@ -521,12 +591,14 @@ nav:nth-child(1) {
     display: block;
     width: 24px;    
     height: 24px;
-    background-color: #30BCED;
-    border-radius: 2px;
+    background-color: #58CBF1;
+    text-align: center;
+    border: 2px solid #58CBF1;
+    border-radius: 4px;
     color: white;
     text-decoration: none;
-    margin-top: 2px;
-    margin-right: 2px;
+    margin-top: 3px;
+    margin-right: 3px;
     position: absolute;
     top: 0;
     right: 0;

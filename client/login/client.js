@@ -71,10 +71,6 @@ const LoginWindow = (props) => {
             <br/>
 
             <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Sign in</button>
-      
-            <br/>
-      
-            <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
         </form>
     </div>
   );
@@ -112,10 +108,6 @@ const SignupWindow = (props) => {
             <br/>
 
             <button className='formSubmit btn btn-lg btn-primary btn-block' type='submit' type="submit">Sign Up</button>
-      
-            <br/>
-      
-            <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
         </form>
     </div>
   );
@@ -138,6 +130,12 @@ const createSignupWindow = (csrf) => {
   );
 };
 
+const CopyRight = function(props) {    
+    return (
+        <div>Post &copy; {new Date().getFullYear()}</div>
+    );
+};
+
 // setup()
 const setup = (csrf) => {
   const loginButton = document.querySelector('#loginButton');
@@ -154,6 +152,10 @@ const setup = (csrf) => {
     createLoginWindow(csrf);
     return false;
   });
+
+  ReactDOM.render(
+    <CopyRight csrf={csrf}/>, document.querySelector("#copyright")
+  );
   
   // Setting up the default view
   createLoginWindow(csrf);

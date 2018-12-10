@@ -28,6 +28,10 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  type: {
+    type: String,
+    default: "Free",
+  },
   class: {
     type: String,
   },
@@ -36,7 +40,9 @@ const AccountSchema = new mongoose.Schema({
 AccountSchema.statics.toAPI = doc => ({
   // _id is built into your mongo document and is guaranteed to be unique
   username: doc.username,
+  createdDate: doc.createdDate,
   _id: doc._id,
+  type: doc.type,
 });
 
 const validatePassword = (doc, password, callback) => {

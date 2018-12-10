@@ -85,12 +85,6 @@ var LoginWindow = function LoginWindow(props) {
         'button',
         _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
         'Sign in'
-      ),
-      React.createElement('br', null),
-      React.createElement(
-        'p',
-        { 'class': 'mt-5 mb-3 text-muted' },
-        '\xA9 2018-2019'
       )
     )
   );
@@ -142,12 +136,6 @@ var SignupWindow = function SignupWindow(props) {
         'button',
         _defineProperty({ className: 'formSubmit btn btn-lg btn-primary btn-block', type: 'submit' }, 'type', 'submit'),
         'Sign Up'
-      ),
-      React.createElement('br', null),
-      React.createElement(
-        'p',
-        { 'class': 'mt-5 mb-3 text-muted' },
-        '\xA9 2018-2019'
       )
     )
   );
@@ -162,6 +150,15 @@ var createLoginWindow = function createLoginWindow(csrf) {
 // createSignupWindow()
 var createSignupWindow = function createSignupWindow(csrf) {
   ReactDOM.render(React.createElement(SignupWindow, { csrf: csrf }), document.querySelector('#content'));
+};
+
+var CopyRight = function CopyRight(props) {
+  return React.createElement(
+    'div',
+    null,
+    'Post \xA9 ',
+    new Date().getFullYear()
+  );
 };
 
 // setup()
@@ -180,6 +177,8 @@ var setup = function setup(csrf) {
     createLoginWindow(csrf);
     return false;
   });
+
+  ReactDOM.render(React.createElement(CopyRight, { csrf: csrf }), document.querySelector("#copyright"));
 
   // Setting up the default view
   createLoginWindow(csrf);
